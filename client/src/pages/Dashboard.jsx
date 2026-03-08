@@ -149,85 +149,107 @@ const Dashboard = () => {
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className='container mx-auto px-6 py-8'
+            className='container mx-auto px-6'
         >
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className='mb-8'
+                className='mb-10'
             >
-                <h1 className='text-4xl font-extrabold text-gray-800 mb-2'>
-                    Hello, <span className="text-blue-600">{user && user.name}</span> 👋
+                <p className="text-indigo-600 font-bold uppercase tracking-[0.2em] text-xs mb-3">Overview Dashboard</p>
+                <h1 className='text-5xl font-black text-slate-900 tracking-tight mb-2'>
+                    Hello, <span className="text-gradient">{user && user.name}</span>
                 </h1>
-                <p className="text-gray-500">Here's your daily health summary</p>
+                <p className="text-slate-600 font-medium">Your health insights at a glance.</p>
             </motion.div>
 
             <motion.div
                 variants={containerVariants}
-                className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10'
+                className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12'
             >
                 <DashboardCard
                     title='BMI Status'
                     value={`${bmiInfo.value} (${bmiInfo.status})`}
-                    icon={<FaWeight size={24} />}
+                    icon={<FaWeight size={20} />}
                     color={bmiInfo.color}
                 />
                 <DashboardCard
                     title='Calories Burned'
                     value={`${caloriesBurnedToday} kcal`}
-                    icon={<FaFire size={24} />}
-                    color='border-red-500'
+                    icon={<FaFire size={20} />}
+                    color='border-rose-500'
                 />
                 <DashboardCard
                     title='Calories Consumed'
                     value={`${caloriesConsumedToday} kcal`}
-                    icon={<FaUtensils size={24} />}
-                    color='border-green-500'
+                    icon={<FaUtensils size={20} />}
+                    color='border-emerald-500'
                 />
                 <DashboardCard
-                    title='Net Calories'
+                    title='Net Balance'
                     value={`${caloriesConsumedToday - caloriesBurnedToday} kcal`}
-                    icon={<FaWalking size={24} />}
-                    color='border-blue-500'
+                    icon={<FaWalking size={20} />}
+                    color='border-indigo-500'
                 />
             </motion.div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Weekly Activity Chart */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className='glass-card p-8 rounded-3xl shadow-lg lg:col-span-2'
+                    className='glass-card p-10 rounded-[2.5rem] lg:col-span-2 relative overflow-hidden'
                 >
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className='text-2xl font-bold text-gray-800'>Weekly Activity</h2>
-                    </div>
+                    <div className="relative z-10">
+                        <div className="flex justify-between items-center mb-10">
+                            <div>
+                                <h2 className='text-3xl font-black text-slate-900 uppercase tracking-tighter'>Weekly Analysis</h2>
+                                <p className="text-slate-600 text-sm font-medium">Burn vs Intake performance</p>
+                            </div>
+                            <div className="flex space-x-4">
+                                <div className="flex items-center text-xs font-bold text-slate-600">
+                                    <div className="w-2 h-2 rounded-full bg-indigo-500 mr-2" /> Consumed
+                                </div>
+                                <div className="flex items-center text-xs font-bold text-slate-600">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500 mr-2" /> Burned
+                                </div>
+                            </div>
+                        </div>
 
-                    <div style={{ width: '100%', height: 350 }}>
-                        <ResponsiveContainer>
-                            <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                <defs>
-                                    <linearGradient id="colorConsumed" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="#8884d8" stopOpacity={0.2} />
-                                    </linearGradient>
-                                    <linearGradient id="colorBurned" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.2} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e0e0e0" />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} dy={10} />
-                                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} />
-                                <Tooltip
-                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                                    cursor={{ fill: 'rgba(0,0,0,0.05)' }}
-                                />
-                                <Bar dataKey="calories" fill="url(#colorConsumed)" radius={[6, 6, 0, 0]} barSize={12} name="Consumed" />
-                                <Bar dataKey="burned" fill="url(#colorBurned)" radius={[6, 6, 0, 0]} barSize={12} name="Burned" />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        <div style={{ width: '100%', height: 350 }}>
+                            {chartData.every(d => d.calories === 0 && d.burned === 0) ? (
+                                <div className="h-full flex flex-col items-center justify-center text-slate-400">
+                                    <FaWalking size={48} className="mb-4 opacity-20" />
+                                    <p className="text-sm font-bold uppercase tracking-widest text-center">No activity or meals logged<br />in the last 7 days</p>
+                                </div>
+                            ) : (
+                                <ResponsiveContainer>
+                                    <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                                        <defs>
+                                            <linearGradient id="colorConsumed" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8} />
+                                                <stop offset="95%" stopColor="#6366f1" stopOpacity={0.1} />
+                                            </linearGradient>
+                                            <linearGradient id="colorBurned" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                                                <stop offset="95%" stopColor="#10b981" stopOpacity={0.1} />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 10, fontWeight: 700 }} dy={10} />
+                                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 10, fontWeight: 700 }} />
+                                        <Tooltip
+                                            contentStyle={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}
+                                            itemStyle={{ color: '#0f172a', fontSize: '12px', fontWeight: 600 }}
+                                            cursor={{ fill: 'rgba(0,0,0,0.03)' }}
+                                        />
+                                        <Bar dataKey="calories" fill="url(#colorConsumed)" radius={[6, 6, 6, 6]} barSize={8} name="Consumed" />
+                                        <Bar dataKey="burned" fill="url(#colorBurned)" radius={[6, 6, 6, 6]} barSize={8} name="Burned" />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            )}
+                        </div>
                     </div>
                 </motion.div>
 
@@ -235,60 +257,69 @@ const Dashboard = () => {
                 <div className="flex flex-col gap-8">
                     {/* Radial Goal Chart */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.5 }}
-                        className='glass-card p-8 rounded-3xl shadow-lg flex flex-col items-center justify-center'
+                        className='glass-card p-10 rounded-[2.5rem] flex flex-col items-center justify-center'
                     >
-                        <h2 className='text-xl font-bold text-gray-800 mb-4 self-start'>Daily Goal</h2>
+                        <h2 className='text-xl font-black text-slate-900 uppercase tracking-wider mb-6 self-start'>Daily Goal</h2>
                         <div style={{ width: '100%', height: 200 }}>
                             <ResponsiveContainer>
                                 <RadialBarChart
-                                    innerRadius="70%"
+                                    innerRadius="75%"
                                     outerRadius="100%"
                                     data={goalProgress}
                                     startAngle={90}
                                     endAngle={-270}
                                 >
-                                    <RadialBar minAngle={15} label={{ position: 'insideStart', fill: '#fff' }} background clockWise={true} dataKey='uv' />
-                                    <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="text-2xl font-bold fill-gray-700">
+                                    <RadialBar minAngle={15} background clockWise={true} dataKey='uv' cornerRadius={10} fill="#6366f1" />
+                                    <text x="50%" y="45%" textAnchor="middle" dominantBaseline="middle" className="text-3xl font-black fill-slate-900">
                                         {Math.round(goalProgress[0]?.uv || 0)}%
                                     </text>
-                                    <Tooltip />
+                                    <text x="50%" y="60%" textAnchor="middle" dominantBaseline="middle" className="text-xs font-bold fill-slate-600 uppercase tracking-widest">
+                                        Completed
+                                    </text>
                                 </RadialBarChart>
                             </ResponsiveContainer>
                         </div>
-                        <p className="text-gray-500 text-sm mt-2">of 2000kcal Goal</p>
+                        <p className="text-slate-600 text-xs font-bold mt-4 uppercase tracking-widest">{caloriesConsumedToday} / 2000 KCAL</p>
                     </motion.div>
 
                     {/* Meal Distribution Pie Chart */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.6 }}
-                        className='glass-card p-8 rounded-3xl shadow-lg'
+                        className='glass-card p-10 rounded-[2.5rem]'
                     >
-                        <h2 className='text-xl font-bold text-gray-800 mb-2'>Meal Split</h2>
+                        <h2 className='text-xl font-black text-slate-900 uppercase tracking-wider mb-6'>Meal Split</h2>
                         <div style={{ width: '100%', height: 200 }}>
-                            <ResponsiveContainer>
-                                <PieChart>
-                                    <Pie
-                                        data={pieData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={50}
-                                        outerRadius={70}
-                                        paddingAngle={5}
-                                        dataKey="value"
-                                    >
-                                        {pieData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip />
-                                    <Legend iconSize={10} layout="vertical" verticalAlign="middle" align="right" />
-                                </PieChart>
-                            </ResponsiveContainer>
+                            {pieData.length > 0 ? (
+                                <ResponsiveContainer>
+                                    <PieChart>
+                                        <Pie
+                                            data={pieData}
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={60}
+                                            outerRadius={85}
+                                            paddingAngle={8}
+                                            dataKey="value"
+                                            stroke="none"
+                                        >
+                                            {pieData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} cornerRadius={10} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            ) : (
+                                <div className="h-full flex flex-col items-center justify-center text-slate-400">
+                                    <FaUtensils size={32} className="mb-3 opacity-20" />
+                                    <p className="text-xs font-bold uppercase tracking-widest text-center">No meals logged<br />today</p>
+                                </div>
+                            )}
                         </div>
                     </motion.div>
                 </div>

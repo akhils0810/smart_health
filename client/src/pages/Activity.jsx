@@ -105,64 +105,75 @@ const Activity = () => {
     const COLORS = ['#FF8042', '#00C49F', '#FFBB28', '#0088FE', '#8884d8'];
 
     return (
-        <div className='container mx-auto px-6 py-8'>
+        <div className='container mx-auto px-6'>
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className='flex items-center mb-8'
+                className='flex items-center mb-10'
             >
-                <div className="p-3 bg-orange-100 text-orange-600 rounded-xl mr-4 shadow-sm">
-                    <FaRunning size={28} />
+                <div className="p-4 bg-rose-500/10 text-rose-500 rounded-2xl mr-5 shadow-inner border border-rose-500/20">
+                    <FaRunning size={24} />
                 </div>
-                <h1 className='text-3xl font-extrabold text-gray-800'>Activity Tracker</h1>
+                <div>
+                    <h1 className='text-4xl font-black text-slate-900 tracking-tight uppercase'>Activity Tracker</h1>
+                    <p className="text-slate-600 text-sm font-bold tracking-widest uppercase">Every move counts</p>
+                </div>
             </motion.div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-6 rounded-2xl border-l-[6px] border-orange-500 hover:shadow-lg transition-all">
-                    <div className="flex items-center justify-between">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="glass-card p-6 rounded-[2rem] border-l-[6px] border-rose-500 hover:shadow-2xl transition-all group overflow-hidden relative">
+                    <div className="absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full bg-rose-500 opacity-5 group-hover:scale-150 transition-transform duration-700" />
+                    <div className="flex items-center justify-between relative z-10">
                         <div>
-                            <p className="text-gray-500 text-xs font-bold uppercase">Total Burned</p>
-                            <p className="text-3xl font-extrabold text-gray-800">{totalBurned} <span className="text-sm font-normal text-gray-500">kcal</span></p>
+                            <p className="text-slate-600 text-[10px] font-black uppercase tracking-widest mb-1">Total Burned</p>
+                            <p className="text-3xl font-black text-slate-900">{totalBurned} <span className="text-xs font-medium text-slate-500">KCAL</span></p>
                         </div>
-                        <FaFire className="text-orange-500 text-3xl opacity-80" />
+                        <div className="p-3 bg-rose-500/10 rounded-2xl text-rose-500">
+                            <FaFire size={24} />
+                        </div>
                     </div>
                 </motion.div>
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card p-6 rounded-2xl border-l-[6px] border-blue-500 hover:shadow-lg transition-all">
-                    <div className="flex items-center justify-between">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="glass-card p-6 rounded-[2rem] border-l-[6px] border-indigo-500 hover:shadow-2xl transition-all group overflow-hidden relative">
+                    <div className="absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full bg-indigo-500 opacity-5 group-hover:scale-150 transition-transform duration-700" />
+                    <div className="flex items-center justify-between relative z-10">
                         <div>
-                            <p className="text-gray-500 text-xs font-bold uppercase">Total Duration</p>
-                            <p className="text-3xl font-extrabold text-gray-800">{totalDuration} <span className="text-sm font-normal text-gray-500">min</span></p>
+                            <p className="text-slate-600 text-[10px] font-black uppercase tracking-widest mb-1">Total Duration</p>
+                            <p className="text-3xl font-black text-slate-900">{totalDuration} <span className="text-xs font-medium text-slate-500">MIN</span></p>
                         </div>
-                        <FaClock className="text-blue-500 text-3xl opacity-80" />
+                        <div className="p-3 bg-indigo-500/10 rounded-2xl text-indigo-500">
+                            <FaClock size={24} />
+                        </div>
                     </div>
                 </motion.div>
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card p-6 rounded-2xl border-l-[6px] border-green-500 hover:shadow-lg transition-all">
-                    <div className="flex items-center justify-between">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="glass-card p-6 rounded-[2rem] border-l-[6px] border-emerald-500 hover:shadow-2xl transition-all group overflow-hidden relative">
+                    <div className="absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full bg-emerald-500 opacity-5 group-hover:scale-150 transition-transform duration-700" />
+                    <div className="flex items-center justify-between relative z-10">
                         <div>
-                            <p className="text-gray-500 text-xs font-bold uppercase">Logged Activities</p>
-                            <p className="text-3xl font-extrabold text-gray-800">{activities.length}</p>
+                            <p className="text-slate-600 text-[10px] font-black uppercase tracking-widest mb-1">Success Rate</p>
+                            <p className="text-3xl font-black text-slate-900">{activities.length} <span className="text-xs font-medium text-slate-500">DAYS</span></p>
                         </div>
-                        <FaTrophy className="text-green-500 text-3xl opacity-80" />
+                        <div className="p-3 bg-emerald-500/10 rounded-2xl text-emerald-500">
+                            <FaTrophy size={24} />
+                        </div>
                     </div>
                 </motion.div>
             </div>
 
-            <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-10'>
                 {/* Form Section */}
                 <motion.div
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className='glass-card p-8 rounded-3xl h-fit shadow-xl'
+                    className='glass-card p-10 rounded-[2.5rem] h-fit sticky top-28'
                 >
-                    <h2 className='text-xl font-bold mb-6 text-gray-800'>Log New Workout</h2>
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <h2 className='text-2xl font-black mb-8 text-slate-900 uppercase tracking-tighter'>Journal Workout</h2>
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label className='block text-gray-600 text-sm font-bold mb-2'>Activity Type</label>
+                            <label className='block text-slate-600 text-xs font-black mb-3 uppercase tracking-widest'>Modality</label>
                             <select
                                 name='activityType'
-                                className='glass-input w-full px-4 py-3 rounded-xl focus:outline-none bg-white'
+                                className='glass-input w-full px-5 py-4 rounded-2xl appearance-none cursor-pointer'
                                 value={formData.activityType}
                                 onChange={handleChange}
                             >
@@ -176,88 +187,74 @@ const Activity = () => {
                             </select>
                         </div>
                         <div>
-                            <label className='block text-gray-600 text-sm font-bold mb-2'>Duration (min)</label>
+                            <label className='block text-slate-600 text-xs font-black mb-3 uppercase tracking-widest'>Duration (minutes)</label>
                             <input
                                 type='number'
                                 name='duration'
-                                className='glass-input w-full px-4 py-3 rounded-xl focus:outline-none'
-                                placeholder='e.g., 30'
+                                className='glass-input w-full px-5 py-4 rounded-2xl'
+                                placeholder='30'
                                 value={formData.duration}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
                         <div>
-                            <label className='block text-gray-600 text-sm font-bold mb-2'>Calories Burned</label>
+                            <label className='block text-slate-600 text-xs font-black mb-3 uppercase tracking-widest'>Energy Spent (kcal)</label>
                             <input
                                 type='number'
                                 name='caloriesBurned'
-                                className='glass-input w-full px-4 py-3 rounded-xl focus:outline-none'
+                                className='glass-input w-full px-5 py-4 rounded-2xl'
                                 value={formData.caloriesBurned}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
                         <motion.button
-                            whileHover={{ scale: 1.02 }}
+                            whileHover={{ scale: 1.02, boxShadow: '0 20px 25px -5px rgba(244, 63, 94, 0.2)' }}
                             whileTap={{ scale: 0.98 }}
                             type='submit'
-                            className='w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 mt-2'
+                            className='w-full bg-gradient-to-r from-rose-500 to-orange-500 text-white font-black py-4 rounded-2xl shadow-xl shadow-rose-500/10 transition-all uppercase tracking-widest mt-2'
                         >
-                            <span className="flex items-center justify-center">
-                                <FaRunning className="mr-2" /> Log Activity
-                            </span>
+                            Log Activity
                         </motion.button>
                     </form>
                 </motion.div>
 
                 {/* List & Chart Section */}
-                <div className='lg:col-span-2 space-y-8'>
+                <div className='lg:col-span-2 space-y-10'>
                     {/* Charts Row */}
-                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                        {/* Weekly Trend Area Chart */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5 }}
-                            className='glass-card p-6 rounded-3xl'
-                        >
-                            <h3 className="text-lg font-bold text-gray-800 mb-4">7-Day Burn Trend</h3>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className='glass-card p-8 rounded-[2rem]'>
+                            <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-6">Burn Intensity</h3>
                             <div style={{ width: '100%', height: 200 }}>
                                 <ResponsiveContainer>
                                     <AreaChart data={trendData}>
                                         <defs>
-                                            <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#ff8042" stopOpacity={0.8} />
-                                                <stop offset="95%" stopColor="#ff8042" stopOpacity={0} />
+                                            <linearGradient id="colorTrendAct" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.8} />
+                                                <stop offset="95%" stopColor="#f43f5e" stopOpacity={0} />
                                             </linearGradient>
                                         </defs>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e0e0e0" />
-                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                                        <Tooltip contentStyle={{ borderRadius: '12px', border: 'none' }} />
-                                        <Area type="monotone" dataKey="calories" stroke="#ff8042" fillOpacity={1} fill="url(#colorTrend)" strokeWidth={3} />
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 10, fontWeight: 700 }} />
+                                        <Tooltip contentStyle={{ backgroundColor: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '12px', color: '#0f172a' }} itemStyle={{ color: '#0f172a' }} />
+                                        <Area type="monotone" dataKey="calories" stroke="#f43f5e" fillOpacity={1} fill="url(#colorTrendAct)" strokeWidth={4} />
                                     </AreaChart>
                                 </ResponsiveContainer>
                             </div>
                         </motion.div>
 
-                        {/* Activity Type Bar Chart */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.55 }}
-                            className='glass-card p-6 rounded-3xl'
-                        >
-                            <h3 className="text-lg font-bold text-gray-800 mb-4">Burn by Type</h3>
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className='glass-card p-8 rounded-[2rem]'>
+                            <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-6">Modality Impact</h3>
                             <div style={{ width: '100%', height: 200 }}>
                                 <ResponsiveContainer>
                                     <BarChart data={chartData}>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e0e0e0" />
-                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                                        <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '12px', border: 'none' }} />
-                                        <Bar dataKey="calories" radius={[4, 4, 0, 0]}>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 10, fontWeight: 700 }} />
+                                        <Tooltip cursor={{ fill: 'rgba(0,0,0,0.03)' }} contentStyle={{ backgroundColor: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '12px', color: '#0f172a' }} itemStyle={{ color: '#0f172a' }} />
+                                        <Bar dataKey="calories" radius={[6, 6, 6, 6]} barSize={12}>
                                             {chartData.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} opacity={0.8} />
                                             ))}
                                         </Bar>
                                     </BarChart>
@@ -267,56 +264,51 @@ const Activity = () => {
                     </div>
 
                     <div>
-                        <motion.h2
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className='text-xl font-bold mb-6 text-gray-800 ml-1'
-                        >
-                            Recent Activities
-                        </motion.h2>
+                        <h2 className='text-2xl font-black mb-8 text-slate-900 uppercase tracking-tighter'>Workout History</h2>
 
                         {activities.length > 0 ? (
-                            <div className='space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar'>
+                            <div className='grid grid-cols-1 gap-4 pr-2'>
                                 <AnimatePresence>
                                     {activities.map((activity, index) => (
                                         <motion.div
                                             key={activity._id}
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, x: -20 }}
+                                            exit={{ opacity: 0, scale: 0.95 }}
                                             transition={{ delay: index * 0.05 }}
-                                            className='bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex justify-between items-center'
+                                            className='glass-card p-6 rounded-3xl flex justify-between items-center group overflow-hidden relative'
                                         >
-                                            <div className="flex items-center">
-                                                <div className="bg-orange-50 p-3 rounded-full mr-4 text-orange-500">
-                                                    <FaRunning size={20} />
+                                            <div className="absolute inset-y-0 left-0 w-1 bg-rose-500 h-full opacity-50" />
+                                            <div className="flex items-center relative z-10">
+                                                <div className="bg-black/5 p-4 rounded-2xl mr-5 text-rose-500 border border-black/5 group-hover:border-rose-500/30 transition-colors shadow-black/5 shadow-xl">
+                                                    <FaRunning size={24} />
                                                 </div>
                                                 <div>
-                                                    <p className='font-bold text-gray-800 text-lg'>{activity.activityType}</p>
-                                                    <div className="flex items-center text-sm text-gray-500 mt-1">
-                                                        <FaCalendarAlt className="mr-1" size={12} />
-                                                        <span className="mr-3">{new Date(activity.date).toLocaleDateString()}</span>
-                                                        <FaClock className="mr-1" size={12} />
-                                                        <span>{activity.duration} min</span>
+                                                    <div className="flex items-center space-x-3 mb-1">
+                                                        <span className="text-[10px] font-black uppercase bg-rose-500/10 text-rose-500 px-3 py-1 rounded-full tracking-widest">{activity.activityType}</span>
+                                                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center">
+                                                            <FaCalendarAlt className="mr-1" /> {new Date(activity.date).toLocaleDateString()}
+                                                        </span>
+                                                    </div>
+                                                    <p className='font-bold text-slate-900 text-xl tracking-tight leading-tight uppercase group-hover:text-rose-500 transition-colors'>{activity.activityType} Session</p>
+                                                    <div className="flex items-center mt-3 text-slate-500 text-xs font-bold uppercase tracking-widest">
+                                                        <FaClock className="mr-2 text-rose-500/50" />
+                                                        {activity.duration} Minutes of Intensity
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className='text-right'>
-                                                <p className='font-extrabold text-2xl text-orange-500'>{activity.caloriesBurned}</p>
-                                                <p className='text-xs text-gray-400 font-bold uppercase'>kcal</p>
+                                            <div className='text-right relative z-10'>
+                                                <p className='font-black text-4xl text-slate-900 tracking-tighter'>{activity.caloriesBurned}</p>
+                                                <p className='text-[10px] text-slate-500 font-extrabold uppercase tracking-[0.3em]'>Kcal Burned</p>
                                             </div>
                                         </motion.div>
                                     ))}
                                 </AnimatePresence>
                             </div>
                         ) : (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className='text-center py-20 bg-white rounded-3xl opacity-60'
-                            >
-                                <FaRunning size={48} className="mx-auto text-gray-300 mb-4" />
-                                <p className='text-gray-500 text-lg'>No activities logged yet.</p>
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='text-center py-24 glass-card rounded-[2.5rem] bg-black/5'>
+                                <FaRunning size={48} className="mx-auto text-slate-300 mb-6 opacity-40" />
+                                <p className='text-slate-500 font-bold uppercase tracking-widest'>No activity traces found</p>
                             </motion.div>
                         )}
                     </div>

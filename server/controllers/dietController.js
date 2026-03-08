@@ -23,6 +23,9 @@ const setDiet = asyncHandler(async (req, res) => {
         mealType: req.body.mealType,
         foodItems: req.body.foodItems,
         calories: req.body.calories,
+        protein: req.body.protein || 0,
+        carbs: req.body.carbs || 0,
+        fats: req.body.fats || 0,
         date: new Date()
     });
 

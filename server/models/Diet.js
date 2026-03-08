@@ -19,6 +19,18 @@ const dietSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    protein: {
+        type: Number, // in grams
+        default: 0
+    },
+    carbs: {
+        type: Number, // in grams
+        default: 0
+    },
+    fats: {
+        type: Number, // in grams
+        default: 0
+    },
     date: {
         type: Date,
         default: Date.now

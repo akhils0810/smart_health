@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Activity from './pages/Activity';
 import Diet from './pages/Diet';
+import HealthMetrics from './pages/HealthMetrics';
 import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import { ToastContainer } from 'react-toastify';
@@ -15,19 +16,23 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <div className="bg-mesh" />
         <Header />
-        <Routes>
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route element={<PrivateRoute />}>
-            <Route path='/' element={<Dashboard />} />
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route path='/activity' element={<Activity />} />
-            <Route path='/diet' element={<Diet />} />
-            <Route path='/profile' element={<Profile />} />
-          </Route>
-        </Routes>
-        <ToastContainer />
+        <main className="relative pt-10 pb-20">
+          <Routes>
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route element={<PrivateRoute />}>
+              <Route path='/' element={<Dashboard />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/activity' element={<Activity />} />
+              <Route path='/diet' element={<Diet />} />
+              <Route path='/health' element={<HealthMetrics />} />
+              <Route path='/profile' element={<Profile />} />
+            </Route>
+          </Routes>
+        </main>
+        <ToastContainer theme="light" position="bottom-right" />
       </Router>
     </AuthProvider>
   );

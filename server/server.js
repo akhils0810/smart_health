@@ -19,6 +19,7 @@ app.use(cors());
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/activities', require('./routes/activityRoutes'));
 app.use('/api/diets', require('./routes/dietRoutes'));
+app.use('/api/health-metrics', require('./routes/healthRoutes'));
 app.use('/api/seed', require('./routes/seedRoutes'));
 
 // Error Handler

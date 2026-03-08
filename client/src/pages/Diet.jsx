@@ -11,11 +11,17 @@ const Diet = () => {
     const [formData, setFormData] = useState({
         mealType: 'Breakfast',
         foodItems: '',
-        calories: ''
+        calories: '',
+        protein: '',
+        carbs: '',
+        fats: ''
     });
 
     // Stats
     const [totalConsumed, setTotalConsumed] = useState(0);
+    const [totalProtein, setTotalProtein] = useState(0);
+    const [totalCarbs, setTotalCarbs] = useState(0);
+    const [totalFats, setTotalFats] = useState(0);
     const [avgCalories, setAvgCalories] = useState(0);
     const [pieData, setPieData] = useState([]);
     const [recentMealsData, setRecentMealsData] = useState([]);
@@ -40,7 +46,14 @@ const Diet = () => {
 
     const calculateStats = (data) => {
         const total = data.reduce((acc, curr) => acc + curr.calories, 0);
+        const p = data.reduce((acc, curr) => acc + (curr.protein || 0), 0);
+        const c = data.reduce((acc, curr) => acc + (curr.carbs || 0), 0);
+        const f = data.reduce((acc, curr) => acc + (curr.fats || 0), 0);
+
         setTotalConsumed(total);
+        setTotalProtein(p);
+        setTotalCarbs(c);
+        setTotalFats(f);
         setAvgCalories(data.length > 0 ? Math.round(total / data.length) : 0);
 
         // Pie Data
@@ -82,7 +95,7 @@ const Diet = () => {
             const updatedDiets = [response.data, ...diets];
             setDiets(updatedDiets);
             calculateStats(updatedDiets);
-            setFormData({ mealType: 'Breakfast', foodItems: '', calories: '' });
+            setFormData({ mealType: 'Breakfast', foodItems: '', calories: '', protein: '', carbs: '', fats: '' });
             toast.success('Meal added successfully');
         } catch (error) {
             console.error('Error adding meal:', error);
@@ -93,63 +106,58 @@ const Diet = () => {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
     return (
-        <div className='container mx-auto px-6 py-8'>
+        <div className='container mx-auto px-6'>
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className='flex items-center mb-8'
+                className='flex items-center mb-10'
             >
-                <div className="p-3 bg-green-100 text-green-600 rounded-xl mr-4 shadow-sm">
-                    <FaUtensils size={28} />
+                <div className="p-4 bg-emerald-500/10 text-emerald-500 rounded-2xl mr-5 shadow-inner border border-emerald-500/20">
+                    <FaUtensils size={24} />
                 </div>
-                <h1 className='text-3xl font-extrabold text-gray-800'>Diet Tracker</h1>
+                <div>
+                    <h1 className='text-4xl font-black text-slate-900 tracking-tight uppercase'>Nutrition Log</h1>
+                    <p className="text-slate-600 text-sm font-bold tracking-widest uppercase">Fuel your progress</p>
+                </div>
             </motion.div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-6 rounded-2xl border-l-[6px] border-green-500 hover:shadow-lg transition-all">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-500 text-xs font-bold uppercase">Total Consumed</p>
-                            <p className="text-3xl font-extrabold text-gray-800">{totalConsumed} <span className="text-sm font-normal text-gray-500">kcal</span></p>
-                        </div>
-                        <FaAppleAlt className="text-green-500 text-3xl opacity-80" />
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-10">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="glass-card p-5 rounded-3xl border-l-[6px] border-emerald-500">
+                    <p className="text-slate-600 text-[10px] font-black uppercase tracking-widest mb-1">Calories</p>
+                    <p className="text-2xl font-black text-slate-900">{totalConsumed} <span className="text-xs font-medium text-slate-500">KCAL</span></p>
                 </motion.div>
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card p-6 rounded-2xl border-l-[6px] border-yellow-500 hover:shadow-lg transition-all">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-500 text-xs font-bold uppercase">Meals Logged</p>
-                            <p className="text-3xl font-extrabold text-gray-800">{diets.length}</p>
-                        </div>
-                        <FaUtensils className="text-yellow-500 text-3xl opacity-80" />
-                    </div>
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="glass-card p-5 rounded-3xl border-l-[6px] border-indigo-500">
+                    <p className="text-slate-600 text-[10px] font-black uppercase tracking-widest mb-1">Protein</p>
+                    <p className="text-2xl font-black text-indigo-500">{totalProtein} <span className="text-xs font-medium text-slate-500">G</span></p>
                 </motion.div>
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card p-6 rounded-2xl border-l-[6px] border-blue-500 hover:shadow-lg transition-all">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-500 text-xs font-bold uppercase">Avg. Calories/Meal</p>
-                            <p className="text-3xl font-extrabold text-gray-800">{avgCalories} <span className="text-sm font-normal text-gray-500">kcal</span></p>
-                        </div>
-                        <FaLeaf className="text-blue-500 text-3xl opacity-80" />
-                    </div>
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="glass-card p-5 rounded-3xl border-l-[6px] border-amber-500">
+                    <p className="text-slate-600 text-[10px] font-black uppercase tracking-widest mb-1">Carbs</p>
+                    <p className="text-2xl font-black text-amber-500">{totalCarbs} <span className="text-xs font-medium text-slate-500">G</span></p>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }} className="glass-card p-5 rounded-3xl border-l-[6px] border-rose-500">
+                    <p className="text-slate-600 text-[10px] font-black uppercase tracking-widest mb-1">Fats</p>
+                    <p className="text-2xl font-black text-rose-500">{totalFats} <span className="text-xs font-medium text-slate-500">G</span></p>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="glass-card p-5 rounded-3xl border-l-[6px] border-purple-500 md:hidden lg:block">
+                    <p className="text-slate-600 text-[10px] font-black uppercase tracking-widest mb-1">Logged</p>
+                    <p className="text-2xl font-black text-slate-900">{diets.length}</p>
                 </motion.div>
             </div>
 
-            <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-10'>
                 <motion.div
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className='glass-card p-8 rounded-3xl h-fit shadow-xl'
+                    className='glass-card p-10 rounded-[2.5rem] h-fit sticky top-28'
                 >
-                    <h2 className='text-xl font-bold mb-6 text-gray-800'>Log Meal</h2>
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <h2 className='text-2xl font-black mb-8 text-slate-900 uppercase tracking-tighter'>Add New Meal</h2>
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label className='block text-gray-600 text-sm font-bold mb-2'>Meal Type</label>
+                            <label className='block text-slate-600 text-xs font-black mb-3 uppercase tracking-widest'>Meal Window</label>
                             <select
                                 name='mealType'
-                                className='glass-input w-full px-4 py-3 rounded-xl focus:outline-none bg-white'
+                                className='glass-input w-full px-5 py-4 rounded-2xl focus:outline-none appearance-none cursor-pointer'
                                 value={formData.mealType}
                                 onChange={handleChange}
                             >
@@ -160,52 +168,78 @@ const Diet = () => {
                             </select>
                         </div>
                         <div>
-                            <label className='block text-gray-600 text-sm font-bold mb-2'>Food Items</label>
+                            <label className='block text-slate-600 text-xs font-black mb-3 uppercase tracking-widest'>Food Items</label>
                             <input
                                 type='text'
                                 name='foodItems'
-                                className='glass-input w-full px-4 py-3 rounded-xl focus:outline-none'
-                                placeholder='e.g., Oatmeal, Salad'
+                                className='glass-input w-full px-5 py-4 rounded-2xl focus:outline-none'
+                                placeholder='What did you eat?'
                                 value={formData.foodItems}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-                        <div>
-                            <label className='block text-gray-600 text-sm font-bold mb-2'>Calories</label>
-                            <input
-                                type='number'
-                                name='calories'
-                                className='glass-input w-full px-4 py-3 rounded-xl focus:outline-none'
-                                value={formData.calories}
-                                onChange={handleChange}
-                                required
-                            />
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className='block text-slate-600 text-xs font-black mb-3 uppercase tracking-widest'>Calories</label>
+                                <input
+                                    type='number'
+                                    name='calories'
+                                    className='glass-input w-full px-5 py-4 rounded-2xl'
+                                    value={formData.calories}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className='block text-indigo-600 text-xs font-black mb-3 uppercase tracking-widest'>Protein (G)</label>
+                                <input
+                                    type='number'
+                                    name='protein'
+                                    className='glass-input w-full px-5 py-4 rounded-2xl border-indigo-500/20'
+                                    value={formData.protein}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className='block text-amber-600 text-xs font-black mb-3 uppercase tracking-widest'>Carbs (G)</label>
+                                <input
+                                    type='number'
+                                    name='carbs'
+                                    className='glass-input w-full px-5 py-4 rounded-2xl border-amber-500/20'
+                                    value={formData.carbs}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label className='block text-rose-600 text-xs font-black mb-3 uppercase tracking-widest'>Fats (G)</label>
+                                <input
+                                    type='number'
+                                    name='fats'
+                                    className='glass-input w-full px-5 py-4 rounded-2xl border-rose-500/20'
+                                    value={formData.fats}
+                                    onChange={handleChange}
+                                />
+                            </div>
                         </div>
                         <motion.button
-                            whileHover={{ scale: 1.02 }}
+                            whileHover={{ scale: 1.02, boxShadow: '0 20px 25px -5px rgba(16, 185, 129, 0.2)' }}
                             whileTap={{ scale: 0.98 }}
                             type='submit'
-                            className='w-full bg-gradient-to-r from-green-500 to-teal-600 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 mt-2'
+                            className='w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black py-4 rounded-2xl shadow-xl shadow-emerald-500/10 transition-all uppercase tracking-widest'
                         >
-                            <span className="flex items-center justify-center">
-                                <FaCarrot className="mr-2" /> Add Meal
-                            </span>
+                            Log Meal Entry
                         </motion.button>
                     </form>
                 </motion.div>
 
-                <div className='lg:col-span-2 space-y-8'>
+                <div className='lg:col-span-2 space-y-10'>
                     {/* Charts Row */}
-                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                        {/* Meal Type Pie Chart */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5 }}
-                            className='glass-card p-6 rounded-3xl'
-                        >
-                            <h3 className="text-lg font-bold text-gray-800 mb-4">Meal Type Breakdown</h3>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className='glass-card p-8 rounded-[2rem]'>
+                            <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-6">Type Distribution</h3>
                             <div style={{ width: '100%', height: 200 }}>
                                 <ResponsiveContainer>
                                     <PieChart>
@@ -213,42 +247,34 @@ const Diet = () => {
                                             data={pieData}
                                             cx="50%"
                                             cy="50%"
-                                            innerRadius={40}
-                                            outerRadius={80}
-                                            paddingAngle={5}
+                                            innerRadius={60}
+                                            outerRadius={85}
+                                            paddingAngle={8}
                                             dataKey="value"
+                                            stroke="none"
                                         >
                                             {pieData.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} cornerRadius={8} />
                                             ))}
                                         </Pie>
-                                        <Tooltip />
-                                        <Legend iconSize={10} verticalAlign="middle" align="right" layout="vertical" />
+                                        <Tooltip contentStyle={{ backgroundColor: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '12px', color: '#0f172a' }} itemStyle={{ color: '#0f172a' }} />
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
                         </motion.div>
 
-                        {/* Recent Meals Bar Chart */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.55 }}
-                            className='glass-card p-6 rounded-3xl'
-                        >
-                            <h3 className="text-lg font-bold text-gray-800 mb-4">Calorie Intake (Recent)</h3>
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className='glass-card p-8 rounded-[2rem]'>
+                            <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-6">Recent Intake Trends</h3>
                             <div style={{ width: '100%', height: 200 }}>
                                 <ResponsiveContainer>
                                     <BarChart data={recentMealsData}>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e0e0e0" />
-                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                                        <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '12px', border: 'none' }} />
-                                        <Bar dataKey="calories" fill="#10b981" radius={[4, 4, 0, 0]}>
-                                            {
-                                                recentMealsData.map((entry, index) => (
-                                                    <Cell key={`cell-${index}`} fill={entry.calories > 500 ? '#ef4444' : '#10b981'} />
-                                                ))
-                                            }
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 10, fontWeight: 700 }} />
+                                        <Tooltip cursor={{ fill: 'rgba(0,0,0,0.03)' }} contentStyle={{ backgroundColor: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '12px', color: '#0f172a' }} itemStyle={{ color: '#0f172a' }} />
+                                        <Bar dataKey="calories" radius={[6, 6, 6, 6]} barSize={12}>
+                                            {recentMealsData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={entry.calories > 600 ? '#f43f5e' : '#10b981'} />
+                                            ))}
                                         </Bar>
                                     </BarChart>
                                 </ResponsiveContainer>
@@ -257,54 +283,60 @@ const Diet = () => {
                     </div>
 
                     <div>
-                        <motion.h2
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className='text-xl font-bold mb-6 text-gray-800 ml-1'
-                        >
-                            Today's Meals
-                        </motion.h2>
-
+                        <h2 className='text-2xl font-black mb-8 text-slate-900 uppercase tracking-tighter'>Recent Meal Logs</h2>
                         {diets.length > 0 ? (
-                            <div className='space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar'>
+                            <div className='grid grid-cols-1 gap-4 pr-2'>
                                 <AnimatePresence>
                                     {diets.map((diet, index) => (
                                         <motion.div
                                             key={diet._id}
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, x: -20 }}
+                                            exit={{ opacity: 0, scale: 0.95 }}
                                             transition={{ delay: index * 0.05 }}
-                                            className='bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex justify-between items-center'
+                                            className='glass-card p-6 rounded-3xl flex justify-between items-center group overflow-hidden relative'
                                         >
-                                            <div className="flex items-center">
-                                                <div className="bg-green-50 p-3 rounded-full mr-4 text-green-500">
-                                                    <FaLeaf size={20} />
+                                            <div className="absolute inset-y-0 left-0 w-1 bg-emerald-500 h-full opacity-50" />
+                                            <div className="flex items-center relative z-10">
+                                                <div className="bg-black/5 p-4 rounded-2xl mr-5 text-emerald-600 border border-black/5 group-hover:border-emerald-500/30 transition-colors shadow-black/5 shadow-xl">
+                                                    <FaLeaf size={24} />
                                                 </div>
                                                 <div>
-                                                    <p className='font-bold text-gray-800 text-lg'>{diet.mealType}</p>
-                                                    <p className='text-sm text-gray-600'>{diet.foodItems}</p>
+                                                    <div className="flex items-center space-x-2 mb-1">
+                                                        <span className="text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-600 px-2 py-0.5 rounded-full tracking-widest">{diet.mealType}</span>
+                                                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center">
+                                                            <FaClock className="mr-1" /> {new Date(diet.date).toLocaleDateString()}
+                                                        </span>
+                                                    </div>
+                                                    <p className='font-bold text-slate-900 text-xl tracking-tight leading-tight'>{diet.foodItems}</p>
+                                                    <div className="flex gap-4 mt-3">
+                                                        <div className="flex flex-col">
+                                                            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Protein</span>
+                                                            <span className="text-sm font-black text-indigo-500">{diet.protein}g</span>
+                                                        </div>
+                                                        <div className="flex flex-col border-x border-black/5 px-4">
+                                                            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Carbs</span>
+                                                            <span className="text-sm font-black text-amber-500">{diet.carbs}g</span>
+                                                        </div>
+                                                        <div className="flex flex-col">
+                                                            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Fats</span>
+                                                            <span className="text-sm font-black text-rose-500">{diet.fats}g</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className='text-right'>
-                                                <p className='font-extrabold text-2xl text-green-600'>{diet.calories}</p>
-                                                <div className="flex items-center justify-end text-xs text-gray-400 mt-1">
-                                                    <FaCalendarAlt className="mr-1" size={10} />
-                                                    {new Date(diet.date).toLocaleDateString()}
-                                                </div>
+                                            <div className='text-right relative z-10'>
+                                                <p className='font-black text-4xl text-slate-900 tracking-tighter'>{diet.calories}</p>
+                                                <p className='text-[10px] text-slate-500 font-extrabold uppercase tracking-[0.3em]'>Kcal</p>
                                             </div>
                                         </motion.div>
                                     ))}
                                 </AnimatePresence>
                             </div>
                         ) : (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className='text-center py-20 bg-white rounded-3xl opacity-60'
-                            >
-                                <FaUtensils size={48} className="mx-auto text-gray-300 mb-4" />
-                                <p className='text-gray-500 text-lg'>No meals logged yet.</p>
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='text-center py-24 glass-card rounded-[2.5rem] bg-black/5'>
+                                <FaUtensils size={48} className="mx-auto text-slate-300 mb-6 opacity-40" />
+                                <p className='text-slate-500 font-bold uppercase tracking-widest'>No meals detected in range</p>
                             </motion.div>
                         )}
                     </div>
